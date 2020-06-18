@@ -61,8 +61,7 @@ public class ChatRoom extends AppCompatActivity {
 
         sharedPreferences = getSharedPreferences("PREFERENCE", MODE_PRIVATE);
         senderId = sharedPreferences.getString("id", null);
-
-        receiverId = sharedPreferences.getString("passCode", null);
+        receiverId = getIntent().getStringExtra("passCode");
 
 //        Intent intent = getIntent();
 //        //   name = intent.getStringExtra("name");
@@ -130,8 +129,6 @@ public class ChatRoom extends AppCompatActivity {
 
                     if ((senderId.equals(messagePojo.getSenderId()) && receiverId.equals(messagePojo.getReceiverId())) || (senderId.equals(messagePojo.getReceiverId()) && receiverId.equals(messagePojo.getSenderId()))) {
                         arrayList.add(messagePojo);
-
-
                     }
                 }
                 MessageAdapter adapter = new MessageAdapter(arrayList, ChatRoom.this);

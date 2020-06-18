@@ -79,7 +79,7 @@ public class Dashboard extends AppCompatActivity {
                             editor.commit();
 
                                 Intent intent = new Intent(Dashboard.this, ChatRoom.class);
-//                                intent.putExtra("passCode", text_passCode);
+                                intent.putExtra("passCode", text_passCode);
                                 startActivity(intent);
                                 finish();
 
