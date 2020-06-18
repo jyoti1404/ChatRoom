@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content">
+
+
+    <TextView
+        android:background="#0D1F81"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hello"
+        android:textColor="#FFF"
+        android:textStyle="bold"
+        android:id="@+id/textViewMessage"
+        android:textSize="20dp"
+        android:padding="10dp"
+        android:layout_margin="10dp"/>
+
+    <TextView
+        android:layout_below="@+id/textViewMessage"
+        android:background="#FFF"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="time"
+        android:id="@+id/textViewTime"
+        android:paddingLeft="5dp"
+        android:padding="10dp"
+        android:layout_marginLeft="10dp"
+        android:textStyle="bold"
+        android:textColor="#0F1F7A"
+        />
+
+</RelativeLayout>

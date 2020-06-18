@@ -1,0 +1,85 @@
+{
+  "project_info": {
+    "project_number": "902662205517",
+    "firebase_url": "https://purpledocs-8897e.firebaseio.com",
+    "project_id": "purpledocs-8897e",
+    "storage_bucket": "purpledocs-8897e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:902662205517:android:2ca340d9515f028f8aac04",
+        "android_client_info": {
+          "package_name": "com.example.chatroom"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "902662205517-0fp5use0c6btap4f6bv77bo53pie4br9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.chatroom",
+            "certificate_hash": "65a3052efce7c19b9e15957b2387e4ef5b81e535"
+          }
+        },
+        {
+          "client_id": "902662205517-lhjsm92ptrmt5ab8p97ve9egco86jc3u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCGn6mgDvhD9nUXgul5Yng44BZ1D7ROS80"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "902662205517-lhjsm92ptrmt5ab8p97ve9egco86jc3u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:902662205517:android:5e75d7c5d01363198aac04",
+        "android_client_info": {
+          "package_name": "com.example.purpledocspatientchat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "902662205517-qr3902vndjmrehg5qjbhttlg59cda1s5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.purpledocspatientchat",
+            "certificate_hash": "65a3052efce7c19b9e15957b2387e4ef5b81e535"
+          }
+        },
+        {
+          "client_id": "902662205517-lhjsm92ptrmt5ab8p97ve9egco86jc3u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCGn6mgDvhD9nUXgul5Yng44BZ1D7ROS80"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "902662205517-lhjsm92ptrmt5ab8p97ve9egco86jc3u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

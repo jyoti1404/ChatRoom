@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="#FFFFFF"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:showIn="@layout/activity_chat_room">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/recycler_view"
+        android:layout_above="@+id/linear"
+        android:layout_below="@+id/bar_layout"
+        android:layout_margin="10dp"/>
+
+
+    <LinearLayout
+        android:background="@drawable/typemsg"
+        android:id="@+id/linear"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:weightSum="4"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="10dp"
+        android:paddingHorizontal="10dp">
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:id="@+id/editTextMessage"
+            android:hint="Type something..."/>
+
+        <ImageButton
+            android:id="@+id/image_send"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src = "@drawable/ic_send_black_24dp"
+            android:layout_gravity="center_vertical"/>
+
+    </LinearLayout>
+</RelativeLayout>
