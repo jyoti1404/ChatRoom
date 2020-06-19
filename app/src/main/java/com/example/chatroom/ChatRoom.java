@@ -23,6 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 
 public class ChatRoom extends AppCompatActivity {
 
@@ -36,10 +37,9 @@ public class ChatRoom extends AppCompatActivity {
     ArrayList<UserPojo> user = new ArrayList<>();
     Toolbar toolbar;
     SharedPreferences sharedPreferences;
-    String senderId, receiverId, passcode, user_msg_key;
+    String senderId, receiverId,n;
     Intent intent;
     String RECEIVER_DOCTOR_ID = "123";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +61,10 @@ public class ChatRoom extends AppCompatActivity {
 
         sharedPreferences = getSharedPreferences("PREFERENCE", MODE_PRIVATE);
         senderId = sharedPreferences.getString("id", null);
+       // n = sharedPreferences.getString("username", null);
+
+        intent = getIntent();
+        n = intent.getStringExtra("user");
         receiverId = getIntent().getStringExtra("passCode");
 
 //        Intent intent = getIntent();
@@ -69,8 +73,7 @@ public class ChatRoom extends AppCompatActivity {
 //        receiverId = intent.getStringExtra("id");
 //        Log.d ("12345", "onCreate: "+receiverId);
 
-        name.setText(passcode);
-
+        name.setText(n);
 
         getFirebaseData();
 
@@ -126,10 +129,11 @@ public class ChatRoom extends AppCompatActivity {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
 
                     MessagePojo messagePojo = snapshot.getValue(MessagePojo.class);
+                    arrayList.add(messagePojo);
 
-                    if ((senderId.equals(messagePojo.getSenderId()) && receiverId.equals(messagePojo.getReceiverId())) || (senderId.equals(messagePojo.getReceiverId()) && receiverId.equals(messagePojo.getSenderId()))) {
-                        arrayList.add(messagePojo);
-                    }
+//                    if ((senderId.equals(messagePojo.getSenderId()) && receiverId.equals(messagePojo.getReceiverId())) || (senderId.equals(messagePojo.getReceiverId()) && receiverId.equals(messagePojo.getSenderId()))) {
+//                        arrayList.add(messagePojo);
+//                    }
                 }
                 MessageAdapter adapter = new MessageAdapter(arrayList, ChatRoom.this);
                 recyclerView.setAdapter(adapter);

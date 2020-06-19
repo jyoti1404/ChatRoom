@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -23,6 +24,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Dashboard extends AppCompatActivity {
@@ -31,6 +33,8 @@ public class Dashboard extends AppCompatActivity {
     FirebaseAuth auth;
     FirebaseUser firebaseUser;
     DatabaseReference databaseReference;
+    ArrayList<UserPojo> arrayList = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,33 +64,50 @@ public class Dashboard extends AppCompatActivity {
                 ok.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        String text_passCode = passcode.getText().toString();
+
+                        final String text_passCode = passcode.getText().toString();
                         final String id = databaseReference.push().getKey();
-                        final String pass = passcode.getText().toString();
-
-                        if (passcode.getText().toString().equals("123")) {
-
-                            UserPojo userPojo = new UserPojo();
-                            userPojo.setId(id);
-                            databaseReference.child(id).setValue(userPojo);
-
-                            SharedPreferences sharedPreferences = getSharedPreferences("PREFERENCE", MODE_PRIVATE);
-
-                            SharedPreferences.Editor editor = sharedPreferences.edit();
-                            editor.clear();
-                            editor.putString("id", userPojo.getId());
-                            editor.putString("passCode", userPojo.getPassCode());;
-                            editor.commit();
-
-                                Intent intent = new Intent(Dashboard.this, ChatRoom.class);
-                                intent.putExtra("passCode", text_passCode);
-                                startActivity(intent);
-                                finish();
+//                        final String pass = passcode.getText().toString();
 
 
-                        }
+//                        databaseReference.addValueEventListener(new ValueEventListener() {
+//                            @Override
+//                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                                for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
+//                                    UserPojo userPojo = snapshot.getValue(UserPojo.class);
+//                                    String name = userPojo.getUserName();
+//                                    String id = userPojo.getId();
+//                                    arrayList.add(userPojo);
 
-                                }
+//                                    if (!userPojo.getEmail().equals(getIntent().getStringExtra("email"))) {
+//                                        arrayList.add(userPojo);
+//                                    }
+//                                UserPojo userPojo1 = new UserPojo();
+//                                    if (userPojo.getPassword().equals(text_passCode)){
+                                        UserPojo userPojo1 = new UserPojo();
+                                        userPojo1.setId(id);
+                                        userPojo1.setPassCode(text_passCode);
+                                        databaseReference.child(id).child(text_passCode).setValue(userPojo1);
+
+                                        SharedPreferences sharedPreferences = getSharedPreferences("PREFERENCE", MODE_PRIVATE);
+
+                                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                                        editor.clear();
+                                        editor.putString("id", userPojo1.getId());
+                                        editor.putString("username", userPojo1.getUserName());
+                                        //  editor.putString("passCode", userPojo.getPassCode());
+                                        editor.commit();
+
+                                        Intent intent = new Intent(Dashboard.this, ChatRoom.class);
+                                        intent.putExtra("passCode", text_passCode);
+                                        startActivity(intent);
+                                        finish();
+
+                                    }
+//                                }
+//                                }
+
+
                             });
 
 

@@ -17,7 +17,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class login extends AppCompatActivity {
 
-    EditText email, password;
+    EditText email, password, username;
     Button login;
     FirebaseAuth auth;
 
@@ -29,13 +29,15 @@ public class login extends AppCompatActivity {
 
         email = findViewById(R.id.email);
         password = findViewById(R.id.password);
+        username = findViewById(R.id.register_username);
         login = findViewById(R.id.login_button);
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String text_email = email.getText().toString();
+                final String text_email = email.getText().toString();
                 String text_pass = password.getText().toString();
+                final String user = username.getText().toString();
 
                 auth.signInWithEmailAndPassword(text_email, text_pass)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -43,6 +45,9 @@ public class login extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()){
                                     Intent intent = new Intent(login.this, ChatRoom.class);
+//                                    intent.putExtra("name", user );
+                                    String n = intent.getStringExtra("name");
+                                    intent.putExtra("user", n);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                     startActivity(intent);
                                     finish();
