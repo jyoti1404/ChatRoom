@@ -46,6 +46,12 @@ public class Dashboard extends AppCompatActivity {
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         databaseReference = FirebaseDatabase.getInstance().getReference("users").child(firebaseUser.getUid());
 
+        SharedPreferences sharedPreferences = getSharedPreferences("PREFERENCE", MODE_PRIVATE);
+        String name = sharedPreferences.getString("name", null);
+        String email = sharedPreferences.getString("email", null);
+        final String password = sharedPreferences.getString("password", null);
+
+
         join_chat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,8 +91,10 @@ public class Dashboard extends AppCompatActivity {
 //                                        arrayList.add(userPojo);
 //                                    }
 //                                UserPojo userPojo1 = new UserPojo();
-//                                    if (userPojo.getPassword().equals(text_passCode)){
                                         UserPojo userPojo1 = new UserPojo();
+
+//                                        if (password.equals(text_passCode)){
+
                                         userPojo1.setId(id);
                                         userPojo1.setPassCode(text_passCode);
                                         userPojo1.setUserName(text_name);
