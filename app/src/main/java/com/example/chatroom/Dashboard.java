@@ -58,6 +58,7 @@ public class Dashboard extends AppCompatActivity {
                 alertDialog.show();
 
                 final EditText passcode = alertDialog.findViewById(R.id.edit_chat_passcode);
+                final EditText name = alertDialog.findViewById(R.id.edit_chat_name);
                 Button ok = alertDialog.findViewById(R.id.button_ok);
                 Button cancel = alertDialog.findViewById(R.id.button_cancel);
 
@@ -67,6 +68,7 @@ public class Dashboard extends AppCompatActivity {
 
                         final String text_passCode = passcode.getText().toString();
                         final String id = databaseReference.push().getKey();
+                        String text_name = name.getText().toString();
 //                        final String pass = passcode.getText().toString();
 
 
@@ -87,6 +89,7 @@ public class Dashboard extends AppCompatActivity {
                                         UserPojo userPojo1 = new UserPojo();
                                         userPojo1.setId(id);
                                         userPojo1.setPassCode(text_passCode);
+                                        userPojo1.setUserName(text_name);
                                         databaseReference.child(id).child(text_passCode).setValue(userPojo1);
 
                                         SharedPreferences sharedPreferences = getSharedPreferences("PREFERENCE", MODE_PRIVATE);
@@ -100,6 +103,7 @@ public class Dashboard extends AppCompatActivity {
 
                                         Intent intent = new Intent(Dashboard.this, ChatRoom.class);
                                         intent.putExtra("passCode", text_passCode);
+                                        intent.putExtra("name", text_name);
                                         startActivity(intent);
                                         finish();
 

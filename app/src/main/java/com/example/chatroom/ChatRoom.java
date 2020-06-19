@@ -64,7 +64,7 @@ public class ChatRoom extends AppCompatActivity {
        // n = sharedPreferences.getString("username", null);
 
         intent = getIntent();
-        n = intent.getStringExtra("user");
+        n = intent.getStringExtra("name");
         receiverId = getIntent().getStringExtra("passCode");
 
 //        Intent intent = getIntent();

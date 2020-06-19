@@ -29,7 +29,6 @@ public class login extends AppCompatActivity {
 
         email = findViewById(R.id.email);
         password = findViewById(R.id.password);
-        username = findViewById(R.id.register_username);
         login = findViewById(R.id.login_button);
 
         login.setOnClickListener(new View.OnClickListener() {
@@ -46,8 +45,8 @@ public class login extends AppCompatActivity {
                                 if (task.isSuccessful()){
                                     Intent intent = new Intent(login.this, ChatRoom.class);
 //                                    intent.putExtra("name", user );
-                                    String n = intent.getStringExtra("name");
-                                    intent.putExtra("user", n);
+//                                    String n = intent.getStringExtra("name");
+//                                    intent.putExtra("user", n);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                     startActivity(intent);
                                     finish();

@@ -6,11 +6,34 @@
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/text_chat_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Please Enter Name"
+        android:textSize="24sp"
+        android:layout_margin="15dp"
+        android:textStyle="bold"
+        android:textColor="#000"
+        android:fontFamily="serif"/>
+
+    <EditText
+        android:id="@+id/edit_chat_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#000"
+        android:layout_below="@+id/text_chat_name"
+        android:layout_margin="15sp"
+        android:textSize="24dp"
+        android:inputType="text"
+        android:fontFamily="serif"/>
+
+    <TextView
         android:id="@+id/text_chat_passcode"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Please Enter PassCode"
-        android:textSize="30sp"
+        android:layout_below="@+id/edit_chat_name"
+        android:textSize="24sp"
         android:layout_margin="15dp"
         android:textStyle="bold"
         android:textColor="#000"
