@@ -1,35 +1,33 @@
 package com.example.chatroom;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class Dashboard extends AppCompatActivity {
 
     Button join_chat;
+    Toolbar toolbar;
     FirebaseAuth auth;
     FirebaseUser firebaseUser;
     DatabaseReference databaseReference;
@@ -41,16 +39,19 @@ public class Dashboard extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        setTitle("DashBoard");
+
         join_chat = findViewById(R.id.button_join_chat);
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         databaseReference = FirebaseDatabase.getInstance().getReference("users").child(firebaseUser.getUid());
 
-        SharedPreferences sharedPreferences = getSharedPreferences("PREFERENCE", MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences("myprf", MODE_PRIVATE);
         String name = sharedPreferences.getString("name", null);
         String email = sharedPreferences.getString("email", null);
         final String password = sharedPreferences.getString("password", null);
-
 
         join_chat.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,32 +92,36 @@ public class Dashboard extends AppCompatActivity {
 //                                        arrayList.add(userPojo);
 //                                    }
 //                                UserPojo userPojo1 = new UserPojo();
-                                        UserPojo userPojo1 = new UserPojo();
+                       // DatabaseReference pass = databaseReference.child("password");
 
-//                                        if (password.equals(text_passCode)){
+                        //if (pass.equals(text_passCode)) {
 
-                                        userPojo1.setId(id);
-                                        userPojo1.setPassCode(text_passCode);
-                                        userPojo1.setUserName(text_name);
-                                        databaseReference.child(id).child(text_passCode).setValue(userPojo1);
+                            UserPojo userPojo1 = new UserPojo();
+                            userPojo1.setId(id);
+                            userPojo1.setPassCode(text_passCode);
+                            userPojo1.setUserName(text_name);
+                            databaseReference.child(id).child(text_passCode).setValue(userPojo1);
 
-                                        SharedPreferences sharedPreferences = getSharedPreferences("PREFERENCE", MODE_PRIVATE);
+                            SharedPreferences sharedPreferences = getSharedPreferences("PREFERENCE", MODE_PRIVATE);
 
-                                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                                        editor.clear();
-                                        editor.putString("id", userPojo1.getId());
-                                        editor.putString("username", userPojo1.getUserName());
-                                        //  editor.putString("passCode", userPojo.getPassCode());
-                                        editor.commit();
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.clear();
+                            editor.putString("id", userPojo1.getId());
+                            editor.putString("username", userPojo1.getUserName());
+                            //  editor.putString("passCode", userPojo.getPassCode());
+                            editor.commit();
 
-                                        Intent intent = new Intent(Dashboard.this, ChatRoom.class);
-                                        intent.putExtra("passCode", text_passCode);
-                                        intent.putExtra("name", text_name);
-                                        startActivity(intent);
-                                        finish();
+                            Intent intent = new Intent(Dashboard.this, ChatRoom.class);
+                            intent.putExtra("passCode", userPojo1.getPassCode());
+                            intent.putExtra("name", userPojo1.getUserName());
+                            startActivity(intent);
+                            finish();
 
-                                    }
-//                                }
+                        }
+
+//
+
+
 //                                }
 
 
@@ -125,5 +130,34 @@ public class Dashboard extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void setSupportActionBar(Toolbar toolbar) {
+        this.toolbar = toolbar;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+
+        MenuInflater menuInflater =getMenuInflater();
+        menuInflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+
+            case R.id.menu_sign_out:
+                SharedPreferences sharedPreferences = getSharedPreferences("PREFERENCE",MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.clear();
+                editor.commit();
+                Toast.makeText(this, "Log Out", Toast.LENGTH_SHORT).show();
+                Intent intent1 =new Intent(Dashboard.this,MainActivity.class);
+                startActivity(intent1);
+                break;
+        }
+        return true;
     }
 }

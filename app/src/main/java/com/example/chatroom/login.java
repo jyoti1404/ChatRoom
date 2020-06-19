@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -65,53 +66,57 @@ public class login extends AppCompatActivity {
                 final String mail = email.getText().toString();
                 final String pa = password.getText().toString();
 
+                if (TextUtils.isEmpty(mail) || TextUtils.isEmpty(pa)) {
+                    Toast.makeText(login.this, "All fields are required", Toast.LENGTH_SHORT).show();
+                } else {
+                    auth.signInWithEmailAndPassword(mail, pa)
+                            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    if (task.isSuccessful()) {
+                                        databaseReference.addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
 
-                auth.signInWithEmailAndPassword(mail, pa)
-                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    databaseReference.addValueEventListener(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                            for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                                                    UserPojo userPojo = dataSnapshot1.getValue(UserPojo.class);
 
-                                                UserPojo userPojo = dataSnapshot1.getValue(UserPojo.class);
+                                                    String femail = userPojo.getEmail();
+                                                    String fpassword = userPojo.getPassword();
 
-                                                String femail = userPojo.getEmail();
-                                                String fpassword = userPojo.getPassword();
+                                                    if ((mail.equals(femail)) && (pa.equals(fpassword))) {
 
-                                                if ((mail.equals(femail)) && (pa.equals(fpassword))) {
-
-                                                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                                                    editor.putString("name", userPojo.getUserName());
-                                                    editor.putString("id", userPojo.getId());
-                                                    editor.putString("email", userPojo.getEmail());
-                                                    editor.putString("password", userPojo.getPassword());
-                                                    editor.putBoolean("LoginStatus", true);
-                                                    editor.commit();
-                                                    flag = true;
-                                                    break;
+                                                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                                                        editor.putString("name", userPojo.getUserName());
+                                                        editor.putString("id", userPojo.getId());
+                                                        editor.putString("email", userPojo.getEmail());
+                                                        editor.putString("password", userPojo.getPassword());
+                                                        editor.putBoolean("LoginStatus", true);
+                                                        editor.commit();
+                                                        flag = true;
+                                                        break;
+                                                    }
+                                                }
+                                                if (flag == true) {
+                                                    Intent intent = new Intent(login.this, Dashboard.class);
+                                                    intent.putExtra("password", pa);
+                                                    startActivity(intent);
+                                                    finish();
+                                                } else {
+                                                    password.setText("");
+                                                    Toast.makeText(login.this, "Invalid Username or Password", Toast.LENGTH_SHORT).show();
                                                 }
                                             }
-                                            if (flag == true) {
-                                                Intent intent = new Intent(login.this, Dashboard.class);
-                                                startActivity(intent);
-                                                finish();
-                                            } else {
-                                                password.setText("");
-                                                Toast.makeText(login.this, "Invalid Username or Password", Toast.LENGTH_SHORT).show();
-                                            }
-                                        }
 
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError databaseError) {
-                                            Toast.makeText(login.this, "Database Error", Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                                Toast.makeText(login.this, "Database Error", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                                    }
                                 }
-                            }
-                        });
+                            });
+                }
             }
         });
     }

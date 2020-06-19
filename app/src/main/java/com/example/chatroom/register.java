@@ -69,30 +69,32 @@ public class register extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()){
                             try {
+
                                 FirebaseUser firebaseUser = mAuth.getCurrentUser();
+                                assert firebaseUser != null;
                                 final String userId = firebaseUser.getUid();
 
                                 databaseReference = FirebaseDatabase.getInstance().getReference("users").child(userId);
 
-//                            HashMap<String, String> hashMap = new HashMap<>();
-//                            hashMap.put("id", userId);
-//                            hashMap.put("name", username);
-//                            hashMap.put("email", email);
-//                            hashMap.put("password", password);
+                            HashMap<String, String> hashMap = new HashMap<>();
+                            hashMap.put("id", userId);
+                            hashMap.put("name", username);
+                            hashMap.put("email", email);
+                            hashMap.put("password", password);
 
-                                final UserPojo userPojo = new UserPojo();
-                                userPojo.setUserName(userName.getText().toString().trim());
-                                userPojo.setEmail(mail.getText().toString().trim());
-                                userPojo.setPassword(pass.getText().toString().trim());
+//                                final UserPojo userPojo = new UserPojo();
+//                                userPojo.setUserName(userName.getText().toString().trim());
+//                                userPojo.setEmail(mail.getText().toString().trim());
+//                                userPojo.setPassword(pass.getText().toString().trim());
 
-                                databaseReference.setValue(userPojo).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                databaseReference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()){
                                             Intent intent = new Intent(register.this, MainActivity.class);
                                             intent.putExtra("name", username);
-                                            intent.putExtra("email", userPojo.getEmail());
-                                            intent.putExtra("password", userPojo.getPassword());
+                                            intent.putExtra("email", email);
+                                            intent.putExtra("password", password);
                                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                             startActivity(intent);
                                             finish();

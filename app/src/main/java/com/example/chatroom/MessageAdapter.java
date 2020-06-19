@@ -24,13 +24,13 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     public static final int MSG_TYPE_LEFT = 0;
     public static final int MSG_TYPE_RIGHT = 1;
     Context context;
-    ArrayList<MessagePojo> arrayList = new ArrayList<>();
+    ArrayList<MessagePojo> arrayList;
+    String receiverId;
 
-    FirebaseUser fuser;
-
-    public MessageAdapter(ArrayList<MessagePojo> arrayList, Context context){
+    public MessageAdapter(ArrayList<MessagePojo> arrayList, Context context, String receiverId){
         this.context = context;
         this.arrayList = arrayList;
+        this.receiverId = receiverId;
     }
 
     @NonNull
@@ -78,9 +78,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
     @Override
     public int getItemViewType(int position) {
-        fuser = FirebaseAuth.getInstance().getCurrentUser();
 
-        if (arrayList.get(position).getSenderId().equals(fuser.getUid())){
+        if (arrayList.get(position).getReceiverId().equals(receiverId)){
             Log.d("123", arrayList.get(position).getSenderId());
             return MSG_TYPE_RIGHT;
         }

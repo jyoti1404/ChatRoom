@@ -1,38 +1,45 @@
 package com.example.chatroom;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
+import com.example.chatroom.Notification.Token;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class ChatRoom extends AppCompatActivity {
 
     TextView name;
     EditText message;
-    ImageButton send;
+    FloatingActionButton send;
     RecyclerView recyclerView;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
+    FirebaseUser firebaseUser;
     ArrayList<MessagePojo> arrayList = new ArrayList<>();
     ArrayList<UserPojo> user = new ArrayList<>();
     Toolbar toolbar;
@@ -58,6 +65,7 @@ public class ChatRoom extends AppCompatActivity {
 
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("messageinfo");
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         sharedPreferences = getSharedPreferences("PREFERENCE", MODE_PRIVATE);
         senderId = sharedPreferences.getString("id", null);
@@ -119,6 +127,8 @@ public class ChatRoom extends AppCompatActivity {
             }
         });
 
+        updateToken(FirebaseInstanceId.getInstance().getToken());
+
     }
     private void getFirebaseData(){
         databaseReference.addValueEventListener(new ValueEventListener() {
@@ -135,7 +145,8 @@ public class ChatRoom extends AppCompatActivity {
 //                        arrayList.add(messagePojo);
 //                    }
                 }
-                MessageAdapter adapter = new MessageAdapter(arrayList, ChatRoom.this);
+
+                MessageAdapter adapter = new MessageAdapter(arrayList, ChatRoom.this, receiverId);
                 recyclerView.setAdapter(adapter);
             }
 
@@ -148,8 +159,41 @@ public class ChatRoom extends AppCompatActivity {
 
     }
 
+    private void updateToken(String token){
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Tokens");
+        Token token1 = new Token(token);
+        databaseReference.child(firebaseUser.getUid()).setValue(token1);
+    }
+
     public void setSupportActionBar(Toolbar supportActionBar) {
         this.toolbar = supportActionBar;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+
+            case R.id.menu_sign_out:
+//                SharedPreferences sharedPreferences = getSharedPreferences("PREFERENCE",MODE_PRIVATE);
+//                SharedPreferences.Editor editor = sharedPreferences.edit();
+//                editor.clear();
+//                editor.commit();
+                FirebaseAuth.getInstance().signOut();
+                Toast.makeText(this, "Log Out", Toast.LENGTH_SHORT).show();
+                Intent intent1 =new Intent(ChatRoom.this,MainActivity.class);
+                startActivity(intent1);
+                finish();
+                break;
+        }
+        return true;
     }
 }
 

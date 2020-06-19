@@ -16,13 +16,8 @@ public class MainActivity extends AppCompatActivity {
     FirebaseUser firebaseUser;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        login = findViewById(R.id.login_button);
-        signup = findViewById(R.id.signup_button);
-
+    protected void onStart() {
+        super.onStart();
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         if (firebaseUser!=null){
@@ -30,6 +25,19 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        login = findViewById(R.id.login_button);
+        signup = findViewById(R.id.signup_button);
+
+
+
+
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
